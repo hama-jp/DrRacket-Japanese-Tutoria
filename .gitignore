@@ -1,0 +1,6 @@
+compiled/
+*.dep
+*.zo
+/tmp/
+*.pyc
+.DS_Store
