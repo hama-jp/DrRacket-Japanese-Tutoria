@@ -79,7 +79,21 @@ mini-lisp では 2 段構成にします。
       [else (loop (cdr frames))])))
 ```
 
-`cond` の `=>` は「述語が真なら、その結果を関数として呼ぶ」の構文。`(assoc sym frame) => cdr` は `(cdr (assoc sym frame))` を返すと読みます。
+`cond` の `=>` は「テスト式の値が真なら、その値を関数に渡して呼ぶ」という Scheme 由来の便利記法です。つまり
+
+```racket
+[(assoc sym (car frames)) => cdr]
+```
+
+は次と等価です。
+
+```racket
+[(assoc sym (car frames))
+ => (lambda (matched) (cdr matched))]
+;; つまり「assoc の戻り値が #f でなければ、その値を cdr に渡す」
+```
+
+`assoc` は見つからないと `#f` を返し、見つかれば `(key . value)` のドット対を返します。`=> cdr` と書くと、**1 回だけ呼ぶ `assoc` の結果を即座に値として取り出せる** のでコードが短くなります。
 
 ## 14.4 評価器の骨格
 
